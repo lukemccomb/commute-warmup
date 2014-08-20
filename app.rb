@@ -1,33 +1,26 @@
-require 'csv-mapper'
-
-@results = CsvMapper.import('./data/gschool_commute_data.csv') do
-  start_at_row 1
-  [name, week, day, mode, inbound, outbound, distance]
-end
+require 'csv'
 
 # * For Week 4 on Wednesday, what was Nate's inbound commute time?
 
-def nate_wk4_wed
-  array = @results.flatten
-  groups = array.group_by { |person| person["name"] }
-  nate =  groups["Nate"].group_by { |nate| nate["week"] }
-  @nate_4 =  nate["4"]
-  wed_in = @nate_4.find { |day| day["day"] == "Wednesday" }
-  p "Nate's inbound commute time on Wednesday of week 4 was #{wed_in["inbound"].to_i} minutes"
-end
+commutes_csv = CSV.open('./data/gschool_commute_data.csv', :headers => true, :header_converters => :symbol, :converters => :all)
+commuters_array = commutes_csv.to_a
+commuters_hash = commuters_array.map { |row| row.to_hash }
+groups = commuters_hash.group_by { |day| day[:person] }
+nate = groups["Nate"].group_by { |nate| nate[:week] }
+nate_wk4 = nate[4]
+wed_inbound = nate_wk4.find {|day| day[:day] == "Wednesday" }
+wed_inbound[:inbound]
+p "Nate's inbound commute time on Wednesday of week 4 was #{wed_inbound[:inbound]} minutes"
 
-nate_wk4_wed
+# * For all 5 weeks, what was the group average commute time?
 
 @total = 0
 @commutes = 0
-@results.map do |row|
-  avg = (row["inbound"].to_i + row["outbound"].to_i)
+commuters_hash.each do |row|
+  avg = (row[:inbound] + row[:outbound])
   @total += avg
   @commutes += 2
 end
-
-
-# * For all 5 weeks, what was the group average commute time?
 
 average = @total / @commutes
 
