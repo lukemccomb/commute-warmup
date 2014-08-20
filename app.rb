@@ -5,24 +5,18 @@ require 'csv-mapper'
   [name, week, day, mode, inbound, outbound, distance]
 end
 
-# p results
-# p nate_4
+# * For Week 4 on Wednesday, what was Nate's inbound commute time?
 
-def nate_inbound_wk4
+def nate_wk4_wed
   array = @results.flatten
   groups = array.group_by { |person| person["name"] }
   nate =  groups["Nate"].group_by { |nate| nate["week"] }
   @nate_4 =  nate["4"]
-  @inbound_tote = 0
-  @nate_4.each do |day|
-    @inbound_tote += day["inbound"].to_i
-  end
-  p @inbound_tote
+  wed_in = @nate_4.find { |day| day["day"] == "Wednesday" }
+  p "Nate's inbound commute time on Wednesday of week 4 was #{wed_in["inbound"].to_i} minutes"
 end
 
-nate_inbound_wk4
-
-p (@results.first["inbound"].to_i + @results.first["outbound"].to_i)
+nate_wk4_wed
 
 @total = 0
 @commutes = 0
@@ -32,9 +26,12 @@ p (@results.first["inbound"].to_i + @results.first["outbound"].to_i)
   @commutes += 2
 end
 
+
+# * For all 5 weeks, what was the group average commute time?
+
 average = @total / @commutes
 
-p average
+p "The average commute time for all 5 weeks was #{average} minutes."
 
 
 
