@@ -26,22 +26,37 @@ average = @total / @commutes
 
 p "The average commute time for all 5 weeks was #{average} minutes."
 
+# **Extra Credit**
+# * Who walked the fastest to gSchool during the 5 weeks? What was their average speed?
 
+walkers = commuters_hash.group_by { |day| day[:mode] }
+who_walks  = walkers["Walk"].group_by { |walker| walker[:person] }
+#  Emily
+emily = who_walks["Emily"]
+@em_total_in = 0
+@em_days = 0
+emily.each do |day|
+  @em_total_in += day[:inbound]
+  @em_days += 1
+end
+em_avg_walk_time = @em_total_in / @em_days
+em_avg_speed = em_avg_walk_time / emily.first[:distance]
+p "Emily walked at an average speed of #{em_avg_speed} minutes per mile"
 
-# results.each do |person|
-#   hash = {}
-#   hash[person.name] = []
-# end
+# Rachel
+rachel = who_walks["Rachel"]
+@ra_total_in = 0
+@ra_days = 0
+rachel.each do |day|
+  @ra_total_in += day[:inbound]
+  @ra_days += 1
+end
+ra_avg_walk_time = @ra_total_in / @ra_days
+ra_avg_speed = ra_avg_walk_time / rachel.first[:distance]
+p "Rachel walked at an average speed of #{ra_avg_speed} minutes per mile"
 
-# p results
-#
-# p results.first.first_name
-# p results.first.week
-# p results.first.day
-# p results.first.mode
-# p results.first.inbound
-# p results.first.outbound
-# p results.first.distance
-
-
-
+if ra_avg_speed > em_avg_speed
+  p "Rachel was the fastest walker with an average speed of #{ra_avg_speed} minutes per mile."
+else
+  p "Emily was the fastest walker with an average speed of #{em_avg_speed} minutes per mile."
+end
