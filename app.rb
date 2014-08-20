@@ -41,7 +41,7 @@ emily.each do |day|
 end
 em_avg_walk_time = @em_total_in / @em_days
 em_avg_speed = em_avg_walk_time / emily.first[:distance]
-p "Emily walked at an average speed of #{em_avg_speed} minutes per mile"
+p "Emily walked at an average speed of #{em_avg_speed.round} minutes per mile"
 
 # Rachel
 rachel = who_walks["Rachel"]
@@ -53,10 +53,10 @@ rachel.each do |day|
 end
 ra_avg_walk_time = @ra_total_in / @ra_days
 ra_avg_speed = ra_avg_walk_time / rachel.first[:distance]
-p "Rachel walked at an average speed of #{ra_avg_speed} minutes per mile"
+p "Rachel walked at an average speed of #{ra_avg_speed.round} minutes per mile"
 
 if ra_avg_speed > em_avg_speed
-  p "Rachel was the fastest walker with an average speed of #{ra_avg_speed} minutes per mile."
+  p "Rachel was the fastest walker with an average speed of #{ra_avg_speed.round} minutes per mile."
 else
-  p "Emily was the fastest walker with an average speed of #{em_avg_speed} minutes per mile."
+  p "Emily was the fastest walker with an average speed of #{em_avg_speed.round} minutes per mile."
 end
